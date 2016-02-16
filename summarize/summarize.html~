@@ -1,0 +1,28 @@
+<head>  
+  <title>Summarize</title>
+</head>
+
+<body>
+	<h1>Summarize</h1>
+	{{> summary}}
+	{{> results}}
+</body>
+
+
+
+<template name = 'summary'>
+	
+	<form class="form-inline">  
+		  <input type="text" class="form-control" id="searchUser" placeholder="URL to summarize">
+		  <button type="submit" class="btn btn-info">Summarize</button>
+		  <br/><br/>
+		
+	</form>
+</template>
+
+<template name = 'results'>
+	<div class = 'res'>
+        {{result}}
+	</div>
+</template>
+

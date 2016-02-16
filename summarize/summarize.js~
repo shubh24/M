@@ -1,0 +1,41 @@
+console.log('Hello World');
+
+
+Urls = new Mongo.Collection('urls');
+Lines = new Mongo.Collection('lines');
+
+if (Meteor.isClient){
+	Template.summary.events({
+		'submit form':function(event){
+		var searchUser = event.target.searchUser.value;
+		$('#searchUser').val("");
+		Session.set('urlFound',searchUser);
+		urls.insert({urls:searchUser});
+        Meteor.call('callPython', searchUser);
+		return false;
+	  }
+	})
+}
+
+if (Meteor.isServer){
+
+    Meteor.methods({
+        'callPython' : function(url) {
+            var childProcess = Meteor.npmRequire('child_process');
+            var Fiber = Meteor.npmRequire('fibers');
+
+            new Fiber(function(){
+                console.log('hi');
+                file_path = '/home/shubhankar/Desktop/summarize.py'
+                childProcess.exec("python " + file_path + ' 1 ' + url + ' 5', function(error, stdout, stderr) {
+                     if (error) console.log(error);
+                     if (stdout) console.log(stdout);
+                     if (stderr) console.log(stderr);
+                 });
+             }).run();
+        }
+
+    });
+
+}
+
